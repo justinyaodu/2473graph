@@ -1,0 +1,248 @@
+#include "graph.gh"
+
+DIGRAPH(chassis)
+	SUBGRAPH(tens)
+		SUBGRAPH(tens_support)
+			SUBGRAPH(tens_outchan)
+				tens_outchan_material [ITEM]
+				tens_outchan_cutting [WORK V_BANDSAW]
+					tens_outchan_material -> tens_outchan_cutting
+				tens_outchan_marking [WORK MARK]
+					tens_outchan_cutting -> tens_outchan_marking
+				tens_outchan_drilling [WORK DRILL_PRESS]
+					tens_outchan_marking -> tens_outchan_drilling
+				tens_outchan [ITEM]
+					tens_outchan_drilling -> tens_outchan
+			ENDSUB
+			SUBGRAPH(tens_bottom)
+				tens_bottom_material [ITEM URL("https://docs.google.com/document/d/11lanDEaOE4ojEjolzsmVD7vXa_cOViuiUCTOxcapvyM/edit#heading=h.jxgiyg1v3i2l")]
+				tens_bottom_cutting [WORK V_BANDSAW]
+					tens_bottom_material -> tens_bottom_cutting
+				tens_bottom_marking [WORK MARK]
+					tens_bottom_cutting -> tens_bottom_marking
+				tens_bottom_drilling [WORK DRILL_PRESS]
+					tens_bottom_marking -> tens_bottom_drilling
+				tens_bottom_tapping [WORK TAP]
+					tens_bottom_drilling -> tens_bottom_tapping
+				tens_bottom_milling [WORK MILL]
+					tens_bottom_cutting -> tens_bottom_milling
+				tens_bottom [ITEM]
+					{tens_bottom_tapping, tens_bottom_milling} -> tens_bottom
+			ENDSUB
+			tens_support_assembly [WORK ASSEMBLY]
+				{tens_outchan, tens_bottom} -> tens_support_assembly
+			tens_support [ITEM]
+				tens_support_assembly -> tens_support
+		ENDSUB
+		SUBGRAPH(tens_boltblock)
+			tens_boltblock_material [ITEM]
+			tens_boltblock_cutting [WORK V_BANDSAW]
+				tens_boltblock_material -> tens_boltblock_cutting
+			tens_boltblock_marking [WORK MARK]
+				tens_boltblock_cutting -> tens_boltblock_marking
+			tens_boltblock_drilling [WORK DRILL_PRESS]
+				tens_boltblock_marking -> tens_boltblock_drilling
+			tens_boltblock_tapping [WORK TAP]
+				tens_boltblock_drilling -> tens_boltblock_tapping
+			tens_boltblock_milling [WORK MILL]
+				tens_boltblock_cutting -> tens_boltblock_milling
+			tens_boltblock [ITEM]
+				{tens_boltblock_tapping, tens_boltblock_milling} -> tens_boltblock
+		ENDSUB
+		SUBGRAPH(tens_shaft)
+			SUBGRAPH(tens_sprocket)
+				tens_sprocket_base [ITEM]
+				tens_sprocket_borewidening [WORK LATHE]
+					tens_sprocket_base -> tens_sprocket_borewidening
+				tens_sprocket [ITEM]
+					tens_sprocket_borewidening -> tens_sprocket
+			ENDSUB
+			SUBGRAPH(tens_spacer)
+				tens_spacer_material [ITEM]
+				tens_spacer_cutting [WORK LATHE]
+					tens_spacer_material -> tens_spacer_cutting
+				tens_spacer [ITEM]
+					tens_spacer_cutting -> tens_spacer
+			ENDSUB
+			tens_shaft
+				{tens_sprocket, tens_spacer} -> tens_shaft
+		ENDSUB
+		tens_assembly [WORK ASSEMBLY]
+			{tens_support, tens_boltblock, tens_shaft} -> tens_assembly
+			// frame -> tens_assembly [INDIRECT]
+		tens [ITEM]
+			tens_assembly -> tens
+	ENDSUB
+	SUBGRAPH(frame)
+		frame_all_base [ITEM]
+		frame_all_cutting [WORK H_BANDSAW]
+			frame_all_base -> frame_all_cutting
+		frame_all [ITEM]
+			frame_all_cutting -> frame_all
+		SUBGRAPH(frame_corner)
+			frame_corner_base [ITEM]
+				frame_all -> frame_corner_base
+			frame_corner_milling [WORK MILL]
+				frame_corner_base -> frame_corner_milling
+			frame_corner [ITEM]
+				frame_corner_milling -> frame_corner
+		ENDSUB
+		SUBGRAPH(frame_low)
+			frame_low_base [ITEM]
+				frame_all -> frame_low_base
+			frame_low_milling [WORK MILL]
+				frame_low_base -> frame_low_milling
+			frame_low [ITEM]
+				frame_low_milling -> frame_low
+		ENDSUB
+		SUBGRAPH(frame_low_in)
+			frame_low_in [ITEM]
+				frame_low -> frame_low_in
+		ENDSUB
+		SUBGRAPH(frame_low_out)
+			frame_low_out_base [ITEM]
+				frame_low -> frame_low_out_base
+			frame_low_out_milling [WORK MILL] // for tensioner
+				frame_low_out_base -> frame_low_out_milling
+			frame_low_out_transferring [WORK DRILL_PRESS] // also for tensioner
+				frame_low_out_milling -> frame_low_out_transferring
+			frame_low_out [ITEM]
+				frame_low_out_transferring -> frame_low_out
+		ENDSUB
+		SUBGRAPH(frame_up_in)
+			frame_up_in_base [ITEM]
+				frame_all -> frame_up_in_base
+			frame_up_in_milling [WORK MILL]
+				frame_up_in_base -> frame_up_in_milling
+			frame_up_in [ITEM]
+				frame_up_in_milling -> frame_up_in
+		ENDSUB
+		frame_clamping [WORK MISC]
+			{frame_up_in, frame_up_out, frame_low_in, frame_low_out, frame_corner} -> frame_clamping
+		frame_welding [WORK MISC]
+			frame_clamping -> frame_welding
+		frame [ITEM]
+			frame_welding -> frame
+	ENDSUB
+	SUBGRAPH(motor)
+		SUBGRAPH(motor_main)
+			SUBGRAPH(motor_plate)
+				motor_plate_material [ITEM]
+				motor_plate_milling [WORK MILL]
+					motor_plate_material -> motor_plate_milling
+				motor_plate [ITEM]
+					motor_plate_milling -> motor_plate
+			ENDSUB
+			SUBGRAPH(motor_gearbox)
+				motor_gearbox_base [ITEM]
+				motor_gearbox_motor [ITEM]
+				motor_gearbox_assembly [WORK ASSEMBLY]
+					{motor_gearbox_base, motor_gearbox_motor} -> motor_gearbox_assembly
+				motor_gearbox [ITEM]
+					motor_gearbox_assembly -> motor_gearbox
+			ENDSUB
+			motor_main_assembly [WORK ASSEMBLY]
+				{motor_plate, motor_gearbox} -> motor_main_assembly
+			motor_main [ITEM]
+				motor_main_assembly -> motor_main
+		ENDSUB
+		motor [ITEM]
+			motor_main -> motor // TODO
+	ENDSUB
+	SUBGRAPH(whasm)
+		SUBGRAPH(whasm_main)
+			SUBGRAPH(whasm_wheel)
+				SUBGRAPH(whasm_wheel_tread)
+					whasm_wheel_tread_material
+					whasm_wheel_tread_cutting [WORK V_BANDSAW]
+						whasm_wheel_tread_material -> whasm_wheel_tread_cutting
+					whasm_wheel_tread [ITEM]
+						whasm_wheel_tread_cutting -> whasm_wheel_tread
+				ENDSUB
+				whasm_wheel_base [ITEM]
+				whasm_wheel_bearingpressing [WORK MISC]
+					whasm_wheel_base -> whasm_wheel_bearingpressing
+				whasm_wheel_treading [WORK MISC]
+					{whasm_wheel_base, whasm_wheel_tread} -> whasm_wheel_treading
+				whasm_wheel [ITEM]
+					{whasm_wheel_bearingpressing, whasm_wheel_treading} -> whasm_wheel
+			ENDSUB
+			SUBGRAPH(whasm_sprocket)
+				whasm_sprocket_base [ITEM]
+				whasm_sprocket_holewidening [WORK DRILL_PRESS]
+					whasm_sprocket_base -> whasm_sprocket_holewidening
+				whasm_sprocket [ITEM]
+					whasm_sprocket_holewidening -> whasm_sprocket
+			ENDSUB
+			SUBGRAPH(whasm_gear)
+				whasm_gear_base [ITEM]
+				whasm_gear_holewidening [WORK DRILL_PRESS]
+					whasm_gear_base -> whasm_gear_holewidening
+				whasm_gear [ITEM]
+					whasm_gear_holewidening -> whasm_gear
+			ENDSUB
+			SUBGRAPH(whasm_hub)
+				whasm_hub_base [ITEM]
+				whasm_hub_holewidening [WORK DRILL_PRESS]
+					whasm_hub_base -> whasm_hub_holewidening
+				whasm_hub [ITEM]
+					whasm_hub_holewidening -> whasm_hub
+			ENDSUB
+			SUBGRAPH(whasm_customscrews)
+				whasm_customscrews_base [ITEM]
+				whasm_customscrews_cutting [WORK HACKSAW]
+					whasm_customscrews_base -> whasm_customscrews_cutting
+				whasm_customscrews_grinding [WORK MISC]
+					whasm_customscrews_cutting -> whasm_customscrews_grinding
+				whasm_customscrews_testing [WORK ASSEMBLY]
+					whasm_customscrews_grinding -> whasm_customscrews_testing
+				whasm_customscrews [ITEM]
+					whasm_customscrews_testing -> whasm_customscrews
+			ENDSUB
+			whasm_main_assembly [WORK ASSEMBLY]
+				{whasm_wheel, whasm_sprocket, whasm_gear, whasm_hub, whasm_customscrews} -> whasm_main_assembly
+		ENDSUB
+		whasm_main [ITEM]
+			whasm_main_assembly -> whasm_main
+		SUBGRAPH(whasm_bolt)
+			whasm_bolt_base [ITEM]
+			whasm_bolt_cutting [WORK HACKSAW]
+				whasm_bolt_base -> whasm_bolt_cutting
+			whasm_bolt_grinding [WORK MISC]
+				whasm_bolt_cutting -> whasm_bolt_grinding
+			whasm_bolt_notching [WORK V_BANDSAW]
+				whasm_bolt_cutting -> whasm_bolt_notching
+			whasm_bolt [ITEM]
+				{whasm_bolt_grinding, whasm_bolt_notching} -> whasm_bolt
+		ENDSUB
+		SUBGRAPH(whasm_inspacer)
+			whasm_inspacer_material [ITEM]
+			whasm_inspacer_cutting [WORK LATHE]
+				whasm_inspacer_material -> whasm_inspacer_cutting
+			whasm_inspacer_cleanup [WORK MISC]
+				whasm_inspacer_cutting -> whasm_inspacer_cleanup
+			whasm_inspacer_trimming [WORK LATHE]
+				whasm_inspacer_cleanup -> whasm_inspacer_trimming
+			whasm_inspacer [ITEM]
+				whasm_inspacer_trimming -> whasm_inspacer
+		ENDSUB
+		SUBGRAPH(whasm_outspacer)
+			whasm_outspacer_material [ITEM]
+			whasm_outspacer_cutting [WORK LATHE]
+				whasm_outspacer_material -> whasm_outspacer_cutting
+			whasm_outspacer_cleanup [WORK MISC]
+				whasm_outspacer_cutting -> whasm_outspacer_cleanup
+			whasm_outspacer_trimming [WORK LATHE]
+				whasm_outspacer_cleanup -> whasm_outspacer_trimming
+				// frame -> whasm_outspacer_trimming [INDIRECT]
+			whasm_outspacer [ITEM]
+				whasm_outspacer_trimming -> whasm_outspacer
+		ENDSUB
+		whasm_assembly [WORK ASSEMBLY]
+			{whasm_inspacer, whasm_outspacer, whasm_bolt, whasm_main} -> whasm_assembly
+		whasm [ITEM]
+			whasm_assembly -> whasm
+	ENDSUB
+	chassis [ITEM]
+		{frame, motor, tens, whasm} -> chassis
+END

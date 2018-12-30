@@ -1,0 +1,74 @@
+#ifndef GRAPH_GH
+##efine GRAPH_GH
+
+// subgraph macros
+#define SUBGRAPH(NAME, ...) subgraph cluster_ ## NAME { graph [style=dotted label=NAME __VA_ARGS__]
+#define ENDSUB }
+
+// shapes by node type
+#define ITEM shape=oval
+#define WORK shape=box
+
+// outlines by tools needed
+#define HACKSAW color=brown
+#define V_BANDSAW color=red
+#define H_BANDSAW MISC
+#define MILL color=orange
+#define MARK color=yellow
+#define HAND_DRILL color=darkgreen
+#define DRILL_PRESS color=green
+#define LATHE color=cyan
+#define TAP color=blue
+#define ELECTRICAL color=magenta4
+#define MISC color=magenta
+#define ASSEMBLY color=gray
+
+// indirect dependency
+#define INDIRECT constraint=false style=dashed
+
+// completion attributes
+#define PROGRESS(N) progress=N
+#define COMPLETE fillcolor=gray
+
+// URL formatting
+#define URL(U) URL=U fontcolor=blue
+
+// graph macros
+#define DIGRAPH(NAME) digraph NAME { graph [layout=dot rankdir=TB] \
+node [style=filled fillcolor=white fontcolor=black penwidth=3] \
+SUBGRAPH(status_key) \
+	unstarted [WORK V_BANDSAW] \
+	in_progress [WORK V_BANDSAW PROGRESS(0.5)] \
+		unstarted -> in_progress \
+	complete [WORK V_BANDSAW COMPLETE] \
+		in_progress -> complete \
+ENDSUB \
+SUBGRAPH(color_key) \
+	edge [style=invis] \
+	item [ITEM] \
+	hacksaw [WORK HACKSAW] \
+		item -> hacksaw \
+	vertical_bandsaw [WORK V_BANDSAW] \
+		hacksaw -> vertical_bandsaw \
+	mill [WORK MILL] \
+		vertical_bandsaw -> mill \
+	marking [WORK MARK] \
+		mill -> marking \
+	hand_drill [WORK HAND_DRILL] \
+		marking -> hand_drill \
+	drill_press [WORK DRILL_PRESS] \
+		hand_drill -> drill_press \
+	lathe [WORK LATHE] \
+		drill_press -> lathe \
+	tapping [WORK TAP] \
+		lathe -> tapping \
+	miscellaneous [WORK MISC] \
+		tapping -> miscellaneous \
+	electrical [WORK ELECTRICAL] \
+		miscellaneous -> electrical \
+	assembly [WORK ASSEMBLY] \
+		electrical -> assembly \
+ENDSUB
+#define END }
+
+#endif

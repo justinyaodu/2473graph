@@ -1,0 +1,258 @@
+# 1 "chassis.gc"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 31 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 32 "<command-line>" 2
+# 1 "chassis.gc"
+# 1 "graph.gh" 1
+
+##efine GRAPH_GH
+# 2 "chassis.gc" 2
+
+digraph chassis { graph [layout=dot rankdir=TB] node [style=filled fillcolor=white fontcolor=black penwidth=3] subgraph cluster_status_key { graph [style=dotted label=status_key ] unstarted [shape=box color=red] in_progress [shape=box color=red fillcolor="gray;0.5:white"] unstarted -> in_progress complete [shape=box color=red fillcolor=gray] in_progress -> complete } subgraph cluster_color_key { graph [style=dotted label=color_key ] edge [style=invis] item [shape=oval] hacksaw [shape=box color=brown] item -> hacksaw vertical_bandsaw [shape=box color=red] hacksaw -> vertical_bandsaw mill [shape=box color=orange] vertical_bandsaw -> mill marking [shape=box color=yellow] mill -> marking hand_drill [shape=box color=darkgreen] marking -> hand_drill drill_press [shape=box color=green] hand_drill -> drill_press lathe [shape=box color=cyan] drill_press -> lathe tapping [shape=box color=blue] lathe -> tapping miscellaneous [shape=box color=magenta] tapping -> miscellaneous electrical [shape=box color=magenta4] miscellaneous -> electrical assembly [shape=box color=gray] electrical -> assembly }
+ subgraph cluster_tens { graph [style=dotted label=tens ]
+  subgraph cluster_tens_support { graph [style=dotted label=tens_support ]
+   subgraph cluster_tens_outchan { graph [style=dotted label=tens_outchan ]
+    tens_outchan_material [shape=oval]
+    tens_outchan_cutting [shape=box color=red]
+     tens_outchan_material -> tens_outchan_cutting
+    tens_outchan_marking [shape=box color=yellow]
+     tens_outchan_cutting -> tens_outchan_marking
+    tens_outchan_drilling [shape=box color=green]
+     tens_outchan_marking -> tens_outchan_drilling
+    tens_outchan [shape=oval]
+     tens_outchan_drilling -> tens_outchan
+   }
+   subgraph cluster_tens_bottom { graph [style=dotted label=tens_bottom ]
+    tens_bottom_material [shape=oval URL="https://docs.google.com/document/d/11lanDEaOE4ojEjolzsmVD7vXa_cOViuiUCTOxcapvyM/edit#heading=h.jxgiyg1v3i2l" fontcolor=blue]
+    tens_bottom_cutting [shape=box color=red]
+     tens_bottom_material -> tens_bottom_cutting
+    tens_bottom_marking [shape=box color=yellow]
+     tens_bottom_cutting -> tens_bottom_marking
+    tens_bottom_drilling [shape=box color=green]
+     tens_bottom_marking -> tens_bottom_drilling
+    tens_bottom_tapping [shape=box color=blue]
+     tens_bottom_drilling -> tens_bottom_tapping
+    tens_bottom_milling [shape=box color=orange]
+     tens_bottom_cutting -> tens_bottom_milling
+    tens_bottom [shape=oval]
+     {tens_bottom_tapping, tens_bottom_milling} -> tens_bottom
+   }
+   tens_support_assembly [shape=box color=gray]
+    {tens_outchan, tens_bottom} -> tens_support_assembly
+   tens_support [shape=oval]
+    tens_support_assembly -> tens_support
+  }
+  subgraph cluster_tens_boltblock { graph [style=dotted label=tens_boltblock ]
+   tens_boltblock_material [shape=oval]
+   tens_boltblock_cutting [shape=box color=red]
+    tens_boltblock_material -> tens_boltblock_cutting
+   tens_boltblock_marking [shape=box color=yellow]
+    tens_boltblock_cutting -> tens_boltblock_marking
+   tens_boltblock_drilling [shape=box color=green]
+    tens_boltblock_marking -> tens_boltblock_drilling
+   tens_boltblock_tapping [shape=box color=blue]
+    tens_boltblock_drilling -> tens_boltblock_tapping
+   tens_boltblock_milling [shape=box color=orange]
+    tens_boltblock_cutting -> tens_boltblock_milling
+   tens_boltblock [shape=oval]
+    {tens_boltblock_tapping, tens_boltblock_milling} -> tens_boltblock
+  }
+  subgraph cluster_tens_shaft { graph [style=dotted label=tens_shaft ]
+   subgraph cluster_tens_sprocket { graph [style=dotted label=tens_sprocket ]
+    tens_sprocket_base [shape=oval]
+    tens_sprocket_borewidening [shape=box color=cyan]
+     tens_sprocket_base -> tens_sprocket_borewidening
+    tens_sprocket [shape=oval]
+     tens_sprocket_borewidening -> tens_sprocket
+   }
+   subgraph cluster_tens_spacer { graph [style=dotted label=tens_spacer ]
+    tens_spacer_material [shape=oval]
+    tens_spacer_cutting [shape=box color=cyan]
+     tens_spacer_material -> tens_spacer_cutting
+    tens_spacer [shape=oval]
+     tens_spacer_cutting -> tens_spacer
+   }
+   tens_shaft
+    {tens_sprocket, tens_spacer} -> tens_shaft
+  }
+  tens_assembly [shape=box color=gray]
+   {tens_support, tens_boltblock, tens_shaft} -> tens_assembly
+
+  tens [shape=oval]
+   tens_assembly -> tens
+ }
+ subgraph cluster_frame { graph [style=dotted label=frame ]
+  frame_all_base [shape=oval]
+  frame_all_cutting [shape=box color=magenta]
+   frame_all_base -> frame_all_cutting
+  frame_all [shape=oval]
+   frame_all_cutting -> frame_all
+  subgraph cluster_frame_corner { graph [style=dotted label=frame_corner ]
+   frame_corner_base [shape=oval]
+    frame_all -> frame_corner_base
+   frame_corner_milling [shape=box color=orange]
+    frame_corner_base -> frame_corner_milling
+   frame_corner [shape=oval]
+    frame_corner_milling -> frame_corner
+  }
+  subgraph cluster_frame_low { graph [style=dotted label=frame_low ]
+   frame_low_base [shape=oval]
+    frame_all -> frame_low_base
+   frame_low_milling [shape=box color=orange]
+    frame_low_base -> frame_low_milling
+   frame_low [shape=oval]
+    frame_low_milling -> frame_low
+  }
+  subgraph cluster_frame_low_in { graph [style=dotted label=frame_low_in ]
+   frame_low_in [shape=oval]
+    frame_low -> frame_low_in
+  }
+  subgraph cluster_frame_low_out { graph [style=dotted label=frame_low_out ]
+   frame_low_out_base [shape=oval]
+    frame_low -> frame_low_out_base
+   frame_low_out_milling [shape=box color=orange]
+    frame_low_out_base -> frame_low_out_milling
+   frame_low_out_transferring [shape=box color=green]
+    frame_low_out_milling -> frame_low_out_transferring
+   frame_low_out [shape=oval]
+    frame_low_out_transferring -> frame_low_out
+  }
+  subgraph cluster_frame_up_in { graph [style=dotted label=frame_up_in ]
+   frame_up_in_base [shape=oval]
+    frame_all -> frame_up_in_base
+   frame_up_in_milling [shape=box color=orange]
+    frame_up_in_base -> frame_up_in_milling
+   frame_up_in [shape=oval]
+    frame_up_in_milling -> frame_up_in
+  }
+  frame_clamping [shape=box color=magenta]
+   {frame_up_in, frame_up_out, frame_low_in, frame_low_out, frame_corner} -> frame_clamping
+  frame_welding [shape=box color=magenta]
+   frame_clamping -> frame_welding
+  frame [shape=oval]
+   frame_welding -> frame
+ }
+ subgraph cluster_motor { graph [style=dotted label=motor ]
+  subgraph cluster_motor_main { graph [style=dotted label=motor_main ]
+   subgraph cluster_motor_plate { graph [style=dotted label=motor_plate ]
+    motor_plate_material [shape=oval]
+    motor_plate_milling [shape=box color=orange]
+     motor_plate_material -> motor_plate_milling
+    motor_plate [shape=oval]
+     motor_plate_milling -> motor_plate
+   }
+   subgraph cluster_motor_gearbox { graph [style=dotted label=motor_gearbox ]
+    motor_gearbox_base [shape=oval]
+    motor_gearbox_motor [shape=oval]
+    motor_gearbox_assembly [shape=box color=gray]
+     {motor_gearbox_base, motor_gearbox_motor} -> motor_gearbox_assembly
+    motor_gearbox [shape=oval]
+     motor_gearbox_assembly -> motor_gearbox
+   }
+   motor_main_assembly [shape=box color=gray]
+    {motor_plate, motor_gearbox} -> motor_main_assembly
+   motor_main [shape=oval]
+    motor_main_assembly -> motor_main
+  }
+  motor [shape=oval]
+   motor_main -> motor
+ }
+ subgraph cluster_whasm { graph [style=dotted label=whasm ]
+  subgraph cluster_whasm_main { graph [style=dotted label=whasm_main ]
+   subgraph cluster_whasm_wheel { graph [style=dotted label=whasm_wheel ]
+    subgraph cluster_whasm_wheel_tread { graph [style=dotted label=whasm_wheel_tread ]
+     whasm_wheel_tread_material
+     whasm_wheel_tread_cutting [shape=box color=red]
+      whasm_wheel_tread_material -> whasm_wheel_tread_cutting
+     whasm_wheel_tread [shape=oval]
+      whasm_wheel_tread_cutting -> whasm_wheel_tread
+    }
+    whasm_wheel_base [shape=oval]
+    whasm_wheel_bearingpressing [shape=box color=magenta]
+     whasm_wheel_base -> whasm_wheel_bearingpressing
+    whasm_wheel_treading [shape=box color=magenta]
+     {whasm_wheel_base, whasm_wheel_tread} -> whasm_wheel_treading
+    whasm_wheel [shape=oval]
+     {whasm_wheel_bearingpressing, whasm_wheel_treading} -> whasm_wheel
+   }
+   subgraph cluster_whasm_sprocket { graph [style=dotted label=whasm_sprocket ]
+    whasm_sprocket_base [shape=oval]
+    whasm_sprocket_holewidening [shape=box color=green]
+     whasm_sprocket_base -> whasm_sprocket_holewidening
+    whasm_sprocket [shape=oval]
+     whasm_sprocket_holewidening -> whasm_sprocket
+   }
+   subgraph cluster_whasm_gear { graph [style=dotted label=whasm_gear ]
+    whasm_gear_base [shape=oval]
+    whasm_gear_holewidening [shape=box color=green]
+     whasm_gear_base -> whasm_gear_holewidening
+    whasm_gear [shape=oval]
+     whasm_gear_holewidening -> whasm_gear
+   }
+   subgraph cluster_whasm_hub { graph [style=dotted label=whasm_hub ]
+    whasm_hub_base [shape=oval]
+    whasm_hub_holewidening [shape=box color=green]
+     whasm_hub_base -> whasm_hub_holewidening
+    whasm_hub [shape=oval]
+     whasm_hub_holewidening -> whasm_hub
+   }
+   subgraph cluster_whasm_customscrews { graph [style=dotted label=whasm_customscrews ]
+    whasm_customscrews_base [shape=oval]
+    whasm_customscrews_cutting [shape=box color=brown]
+     whasm_customscrews_base -> whasm_customscrews_cutting
+    whasm_customscrews_grinding [shape=box color=magenta]
+     whasm_customscrews_cutting -> whasm_customscrews_grinding
+    whasm_customscrews_testing [shape=box color=gray]
+     whasm_customscrews_grinding -> whasm_customscrews_testing
+    whasm_customscrews [shape=oval]
+     whasm_customscrews_testing -> whasm_customscrews
+   }
+   whasm_main_assembly [shape=box color=gray]
+    {whasm_wheel, whasm_sprocket, whasm_gear, whasm_hub, whasm_customscrews} -> whasm_main_assembly
+  }
+  whasm_main [shape=oval]
+   whasm_main_assembly -> whasm_main
+  subgraph cluster_whasm_bolt { graph [style=dotted label=whasm_bolt ]
+   whasm_bolt_base [shape=oval]
+   whasm_bolt_cutting [shape=box color=brown]
+    whasm_bolt_base -> whasm_bolt_cutting
+   whasm_bolt_grinding [shape=box color=magenta]
+    whasm_bolt_cutting -> whasm_bolt_grinding
+   whasm_bolt_notching [shape=box color=red]
+    whasm_bolt_cutting -> whasm_bolt_notching
+   whasm_bolt [shape=oval]
+    {whasm_bolt_grinding, whasm_bolt_notching} -> whasm_bolt
+  }
+  subgraph cluster_whasm_inspacer { graph [style=dotted label=whasm_inspacer ]
+   whasm_inspacer_material [shape=oval]
+   whasm_inspacer_cutting [shape=box color=cyan]
+    whasm_inspacer_material -> whasm_inspacer_cutting
+   whasm_inspacer_cleanup [shape=box color=magenta]
+    whasm_inspacer_cutting -> whasm_inspacer_cleanup
+   whasm_inspacer_trimming [shape=box color=cyan]
+    whasm_inspacer_cleanup -> whasm_inspacer_trimming
+   whasm_inspacer [shape=oval]
+    whasm_inspacer_trimming -> whasm_inspacer
+  }
+  subgraph cluster_whasm_outspacer { graph [style=dotted label=whasm_outspacer ]
+   whasm_outspacer_material [shape=oval]
+   whasm_outspacer_cutting [shape=box color=cyan]
+    whasm_outspacer_material -> whasm_outspacer_cutting
+   whasm_outspacer_cleanup [shape=box color=magenta]
+    whasm_outspacer_cutting -> whasm_outspacer_cleanup
+   whasm_outspacer_trimming [shape=box color=cyan]
+    whasm_outspacer_cleanup -> whasm_outspacer_trimming
+
+   whasm_outspacer [shape=oval]
+    whasm_outspacer_trimming -> whasm_outspacer
+  }
+  whasm_assembly [shape=box color=gray]
+   {whasm_inspacer, whasm_outspacer, whasm_bolt, whasm_main} -> whasm_assembly
+  whasm [shape=oval]
+   whasm_assembly -> whasm
+ }
+ chassis [shape=oval]
+  {frame, motor, tens, whasm} -> chassis
+}
