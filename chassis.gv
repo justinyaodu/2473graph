@@ -10,7 +10,7 @@
 ##efine GRAPH_GH
 # 2 "chassis.gc" 2
 
-digraph chassis { graph [layout=dot rankdir=TB] node [style=filled fillcolor=white fontcolor=black penwidth=3] subgraph cluster_status_key { graph [style=dotted label=status_key ] unstarted [shape=box color=red] in_progress [shape=box color=red fillcolor="gray;0.5:white"] unstarted -> in_progress complete [shape=box color=red fillcolor=gray] in_progress -> complete } subgraph cluster_color_key { graph [style=dotted label=color_key ] edge [style=invis] item [shape=oval] hacksaw [shape=box color=brown] item -> hacksaw vertical_bandsaw [shape=box color=red] hacksaw -> vertical_bandsaw mill [shape=box color=orange] vertical_bandsaw -> mill marking [shape=box color=yellow] mill -> marking hand_drill [shape=box color=darkgreen] marking -> hand_drill drill_press [shape=box color=green] hand_drill -> drill_press lathe [shape=box color=cyan] drill_press -> lathe tapping [shape=box color=blue] lathe -> tapping miscellaneous [shape=box color=magenta] tapping -> miscellaneous electrical [shape=box color=magenta4] miscellaneous -> electrical assembly [shape=box color=gray] electrical -> assembly }
+digraph chassis { graph [layout=dot rankdir=TB forcelabels=true] node [style=filled fillcolor=white fontcolor=black penwidth=3] subgraph cluster_status_key { graph [style=dotted label=status_key ] unstarted [shape=box color=red] in_progress [shape=box color=red fillcolor="gray;"+"0.5"+":white"] unstarted -> in_progress complete [shape=box color=red fillcolor=gray] in_progress -> complete } subgraph cluster_color_key { graph [style=dotted label=color_key ] edge [style=invis] item [shape=oval] hacksaw [shape=box color=brown] item -> hacksaw vertical_bandsaw [shape=box color=red] hacksaw -> vertical_bandsaw mill [shape=box color=orange] vertical_bandsaw -> mill marking [shape=box color=yellow] mill -> marking hand_drill [shape=box color=darkgreen] marking -> hand_drill drill_press [shape=box color=green] hand_drill -> drill_press lathe [shape=box color=cyan] drill_press -> lathe tapping [shape=box color=blue] lathe -> tapping miscellaneous [shape=box color=magenta] tapping -> miscellaneous electrical [shape=box color=magenta4] miscellaneous -> electrical assembly [shape=box color=gray] electrical -> assembly }
  subgraph cluster_tens { graph [style=dotted label=tens ]
   subgraph cluster_tens_support { graph [style=dotted label=tens_support ]
    subgraph cluster_tens_outchan { graph [style=dotted label=tens_outchan ]
@@ -84,51 +84,98 @@ digraph chassis { graph [layout=dot rankdir=TB] node [style=filled fillcolor=whi
    tens_assembly -> tens
  }
  subgraph cluster_frame { graph [style=dotted label=frame ]
-  frame_all_base [shape=oval]
+  frame_all_material [shape=oval]
   frame_all_cutting [shape=box color=magenta]
-   frame_all_base -> frame_all_cutting
+   frame_all_material -> frame_all_cutting
   frame_all [shape=oval]
    frame_all_cutting -> frame_all
   subgraph cluster_frame_corner { graph [style=dotted label=frame_corner ]
    frame_corner_base [shape=oval]
     frame_all -> frame_corner_base
-   frame_corner_milling [shape=box color=orange]
+   frame_corner_milling [shape=box color=orange label="\N\n("+"making steps"+")"]
     frame_corner_base -> frame_corner_milling
    frame_corner [shape=oval]
     frame_corner_milling -> frame_corner
   }
+  subgraph cluster_frame_front { graph [style=dotted label=frame_front ]
+   frame_front [shape=oval]
+    frame_all -> frame_front
+  }
+  subgraph cluster_frame_low_front { graph [style=dotted label=frame_low_front ]
+   frame_low_front [shape=oval]
+    frame_front -> frame_low_front
+  }
+  subgraph cluster_frame_up_front { graph [style=dotted label=frame_up_front ]
+   frame_up_front_base [shape=oval]
+    frame_front -> frame_up_front_base
+   frame_up_front_milling [shape=box color=orange label="\N\n("+"bumper holes"+")"]
+    frame_up_front_base -> frame_up_front_milling
+   frame_up_front [shape=oval]
+    frame_up_front_milling -> frame_up_front
+  }
   subgraph cluster_frame_low { graph [style=dotted label=frame_low ]
    frame_low_base [shape=oval]
     frame_all -> frame_low_base
-   frame_low_milling [shape=box color=orange]
+   frame_low_milling [shape=box color=orange label="\N\n("+"axle and motor mount holes"+")"]
     frame_low_base -> frame_low_milling
    frame_low [shape=oval]
     frame_low_milling -> frame_low
   }
   subgraph cluster_frame_low_in { graph [style=dotted label=frame_low_in ]
+   frame_low_in_base [shape=oval]
+    frame_low -> frame_low_in_base
+   frame_low_in_axleweldnut_assembly [shape=box color=magenta label="\N\n("+"todo"+")"]
+    frame_low_in_base -> frame_low_in_axleweldnut_assembly
+   frame_low_in_motorweldnut_transfer [shape=box color=darkgreen]
+    frame_low_in_base -> frame_low_in_motorweldnut_transfer
+   frame_low_in_motorweldnut_cntrsink [shape=box color=green]
+    frame_low_in_motorweldnut_transfer -> frame_low_in_motorweldnut_cntrsink
+   frame_low_in_motorweldnut_rivet [shape=box color=magenta]
+    frame_low_in_motorweldnut_cntrsink -> frame_low_in_motorweldnut_rivet
    frame_low_in [shape=oval]
-    frame_low -> frame_low_in
+    {frame_low_in_motorweldnut_rivet, frame_low_in_axleweldnut_assembly} -> frame_low_in
   }
   subgraph cluster_frame_low_out { graph [style=dotted label=frame_low_out ]
    frame_low_out_base [shape=oval]
     frame_low -> frame_low_out_base
-   frame_low_out_milling [shape=box color=orange]
+   frame_low_out_milling [shape=box color=orange label="\N\n("+"tensioner mounting holes"+")"]
     frame_low_out_base -> frame_low_out_milling
-   frame_low_out_transferring [shape=box color=green]
+   frame_low_out_transferring [shape=box color=green label="\N\n("+"make holes through all"+")"]
     frame_low_out_milling -> frame_low_out_transferring
    frame_low_out [shape=oval]
     frame_low_out_transferring -> frame_low_out
+  }
+  subgraph cluster_frame_up_out { graph [style=dotted label=frame_up_out ]
+   frame_up_out_base [shape=oval]
+    frame_all -> frame_up_out_base
+   frame_up_out_milling [shape=box color=orange]
+    frame_up_out_base -> frame_up_out_milling
+   frame_up_out_mechweldnut_transfer [shape=box color=darkgreen]
+    frame_up_out_milling -> frame_up_out_mechweldnut_transfer
+   frame_up_out_mechweldnut_cntrsink [shape=box color=green]
+    frame_up_out_mechweldnut_transfer -> frame_up_out_mechweldnut_cntrsink
+   frame_up_out_mechweldnut_rivet [shape=box color=magenta]
+    frame_up_out_mechweldnut_cntrsink -> frame_up_out_mechweldnut_rivet
+   frame_up_out [shape=oval]
+    frame_up_out_mechweldnut_rivet -> frame_up_out
   }
   subgraph cluster_frame_up_in { graph [style=dotted label=frame_up_in ]
    frame_up_in_base [shape=oval]
     frame_all -> frame_up_in_base
    frame_up_in_milling [shape=box color=orange]
     frame_up_in_base -> frame_up_in_milling
+   frame_up_in_motorweldnut_transfer [shape=box color=darkgreen]
+    frame_up_in_milling -> frame_up_in_motorweldnut_transfer
+   frame_up_in_motorweldnut_cntrsink [shape=box color=green]
+    frame_up_in_motorweldnut_transfer -> frame_up_in_motorweldnut_cntrsink
+   frame_up_in_motorweldnut_rivet [shape=box color=magenta]
+    frame_up_in_motorweldnut_cntrsink -> frame_up_in_motorweldnut_rivet
    frame_up_in [shape=oval]
-    frame_up_in_milling -> frame_up_in
+    frame_up_in_motorweldnut_rivet -> frame_up_in
   }
   frame_clamping [shape=box color=magenta]
-   {frame_up_in, frame_up_out, frame_low_in, frame_low_out, frame_corner} -> frame_clamping
+   {frame_up_in, frame_up_out, frame_low_in, frame_low_out,
+     frame_up_front, frame_low_front, frame_corner} -> frame_clamping
   frame_welding [shape=box color=magenta]
    frame_clamping -> frame_welding
   frame [shape=oval]
@@ -138,7 +185,7 @@ digraph chassis { graph [layout=dot rankdir=TB] node [style=filled fillcolor=whi
   subgraph cluster_motor_main { graph [style=dotted label=motor_main ]
    subgraph cluster_motor_plate { graph [style=dotted label=motor_plate ]
     motor_plate_material [shape=oval]
-    motor_plate_milling [shape=box color=orange]
+    motor_plate_milling [shape=box color=orange label="\N\n("+"cannot do second set of slots\nuntil frame is welded"+")"]
      motor_plate_material -> motor_plate_milling
     motor_plate [shape=oval]
      motor_plate_milling -> motor_plate
@@ -156,7 +203,7 @@ digraph chassis { graph [layout=dot rankdir=TB] node [style=filled fillcolor=whi
    motor_main [shape=oval]
     motor_main_assembly -> motor_main
   }
-  motor [shape=oval]
+  motor [shape=oval label="\N\n("+"todo"+")"]
    motor_main -> motor
  }
  subgraph cluster_whasm { graph [style=dotted label=whasm ]
@@ -204,7 +251,7 @@ digraph chassis { graph [layout=dot rankdir=TB] node [style=filled fillcolor=whi
      whasm_customscrews_base -> whasm_customscrews_cutting
     whasm_customscrews_grinding [shape=box color=magenta]
      whasm_customscrews_cutting -> whasm_customscrews_grinding
-    whasm_customscrews_testing [shape=box color=gray]
+    whasm_customscrews_testing [shape=box color=gray label="\N\n("+"test each with a nut"+")"]
      whasm_customscrews_grinding -> whasm_customscrews_testing
     whasm_customscrews [shape=oval]
      whasm_customscrews_testing -> whasm_customscrews
@@ -220,7 +267,7 @@ digraph chassis { graph [layout=dot rankdir=TB] node [style=filled fillcolor=whi
     whasm_bolt_base -> whasm_bolt_cutting
    whasm_bolt_grinding [shape=box color=magenta]
     whasm_bolt_cutting -> whasm_bolt_grinding
-   whasm_bolt_notching [shape=box color=red]
+   whasm_bolt_notching [shape=box color=red label="\N\n("+"Mr. Williams did this"+")"]
     whasm_bolt_cutting -> whasm_bolt_notching
    whasm_bolt [shape=oval]
     {whasm_bolt_grinding, whasm_bolt_notching} -> whasm_bolt
@@ -231,7 +278,7 @@ digraph chassis { graph [layout=dot rankdir=TB] node [style=filled fillcolor=whi
     whasm_inspacer_material -> whasm_inspacer_cutting
    whasm_inspacer_cleanup [shape=box color=magenta]
     whasm_inspacer_cutting -> whasm_inspacer_cleanup
-   whasm_inspacer_trimming [shape=box color=cyan]
+   whasm_inspacer_trimming [shape=box color=cyan label="\N\n("+"trim all to same length"+")"]
     whasm_inspacer_cleanup -> whasm_inspacer_trimming
    whasm_inspacer [shape=oval]
     whasm_inspacer_trimming -> whasm_inspacer
@@ -242,7 +289,7 @@ digraph chassis { graph [layout=dot rankdir=TB] node [style=filled fillcolor=whi
     whasm_outspacer_material -> whasm_outspacer_cutting
    whasm_outspacer_cleanup [shape=box color=magenta]
     whasm_outspacer_cutting -> whasm_outspacer_cleanup
-   whasm_outspacer_trimming [shape=box color=cyan]
+   whasm_outspacer_trimming [shape=box color=cyan label="\N\n("+"trim specific to each wheel"+")"]
     whasm_outspacer_cleanup -> whasm_outspacer_trimming
 
    whasm_outspacer [shape=oval]

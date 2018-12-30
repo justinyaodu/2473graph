@@ -74,51 +74,98 @@ DIGRAPH(chassis)
 			tens_assembly -> tens
 	ENDSUB
 	SUBGRAPH(frame)
-		frame_all_base [ITEM]
+		frame_all_material [ITEM]
 		frame_all_cutting [WORK H_BANDSAW]
-			frame_all_base -> frame_all_cutting
+			frame_all_material -> frame_all_cutting
 		frame_all [ITEM]
 			frame_all_cutting -> frame_all
 		SUBGRAPH(frame_corner)
 			frame_corner_base [ITEM]
 				frame_all -> frame_corner_base
-			frame_corner_milling [WORK MILL]
+			frame_corner_milling [WORK MILL NOTE("making steps")]
 				frame_corner_base -> frame_corner_milling
 			frame_corner [ITEM]
 				frame_corner_milling -> frame_corner
 		ENDSUB
+		SUBGRAPH(frame_front)
+			frame_front [ITEM]
+				frame_all -> frame_front
+		ENDSUB
+		SUBGRAPH(frame_low_front)
+			frame_low_front [ITEM]
+				frame_front -> frame_low_front
+		ENDSUB
+		SUBGRAPH(frame_up_front)
+			frame_up_front_base [ITEM]
+				frame_front -> frame_up_front_base
+			frame_up_front_milling [WORK MILL NOTE("bumper holes")]
+				frame_up_front_base -> frame_up_front_milling
+			frame_up_front [ITEM]
+				frame_up_front_milling -> frame_up_front
+		ENDSUB
 		SUBGRAPH(frame_low)
 			frame_low_base [ITEM]
 				frame_all -> frame_low_base
-			frame_low_milling [WORK MILL]
+			frame_low_milling [WORK MILL NOTE("axle and motor mount holes")]
 				frame_low_base -> frame_low_milling
 			frame_low [ITEM]
 				frame_low_milling -> frame_low
 		ENDSUB
 		SUBGRAPH(frame_low_in)
+			frame_low_in_base [ITEM]
+				frame_low -> frame_low_in_base
+			frame_low_in_axleweldnut_assembly [WORK MISC NOTE("todo")]
+				frame_low_in_base -> frame_low_in_axleweldnut_assembly
+			frame_low_in_motorweldnut_transfer [WORK HAND_DRILL]
+				frame_low_in_base -> frame_low_in_motorweldnut_transfer
+			frame_low_in_motorweldnut_cntrsink [WORK DRILL_PRESS]
+				frame_low_in_motorweldnut_transfer -> frame_low_in_motorweldnut_cntrsink
+			frame_low_in_motorweldnut_rivet [WORK RIVET]
+				frame_low_in_motorweldnut_cntrsink -> frame_low_in_motorweldnut_rivet
 			frame_low_in [ITEM]
-				frame_low -> frame_low_in
+				{frame_low_in_motorweldnut_rivet, frame_low_in_axleweldnut_assembly} -> frame_low_in
 		ENDSUB
 		SUBGRAPH(frame_low_out)
 			frame_low_out_base [ITEM]
 				frame_low -> frame_low_out_base
-			frame_low_out_milling [WORK MILL] // for tensioner
+			frame_low_out_milling [WORK MILL NOTE("tensioner mounting holes")]
 				frame_low_out_base -> frame_low_out_milling
-			frame_low_out_transferring [WORK DRILL_PRESS] // also for tensioner
+			frame_low_out_transferring [WORK DRILL_PRESS NOTE("make holes through all")]
 				frame_low_out_milling -> frame_low_out_transferring
 			frame_low_out [ITEM]
 				frame_low_out_transferring -> frame_low_out
+		ENDSUB
+		SUBGRAPH(frame_up_out)
+			frame_up_out_base [ITEM]
+				frame_all -> frame_up_out_base
+			frame_up_out_milling [WORK MILL]
+				frame_up_out_base -> frame_up_out_milling
+			frame_up_out_mechweldnut_transfer [WORK HAND_DRILL]
+				frame_up_out_milling -> frame_up_out_mechweldnut_transfer
+			frame_up_out_mechweldnut_cntrsink [WORK DRILL_PRESS]
+				frame_up_out_mechweldnut_transfer -> frame_up_out_mechweldnut_cntrsink
+			frame_up_out_mechweldnut_rivet [WORK RIVET]
+				frame_up_out_mechweldnut_cntrsink -> frame_up_out_mechweldnut_rivet
+			frame_up_out [ITEM]
+				frame_up_out_mechweldnut_rivet -> frame_up_out
 		ENDSUB
 		SUBGRAPH(frame_up_in)
 			frame_up_in_base [ITEM]
 				frame_all -> frame_up_in_base
 			frame_up_in_milling [WORK MILL]
 				frame_up_in_base -> frame_up_in_milling
+			frame_up_in_motorweldnut_transfer [WORK HAND_DRILL]
+				frame_up_in_milling -> frame_up_in_motorweldnut_transfer
+			frame_up_in_motorweldnut_cntrsink [WORK DRILL_PRESS]
+				frame_up_in_motorweldnut_transfer -> frame_up_in_motorweldnut_cntrsink
+			frame_up_in_motorweldnut_rivet [WORK RIVET]
+				frame_up_in_motorweldnut_cntrsink -> frame_up_in_motorweldnut_rivet
 			frame_up_in [ITEM]
-				frame_up_in_milling -> frame_up_in
+				frame_up_in_motorweldnut_rivet -> frame_up_in
 		ENDSUB
 		frame_clamping [WORK MISC]
-			{frame_up_in, frame_up_out, frame_low_in, frame_low_out, frame_corner} -> frame_clamping
+			{frame_up_in, frame_up_out, frame_low_in, frame_low_out, 
+					frame_up_front, frame_low_front, frame_corner} -> frame_clamping
 		frame_welding [WORK MISC]
 			frame_clamping -> frame_welding
 		frame [ITEM]
@@ -128,7 +175,7 @@ DIGRAPH(chassis)
 		SUBGRAPH(motor_main)
 			SUBGRAPH(motor_plate)
 				motor_plate_material [ITEM]
-				motor_plate_milling [WORK MILL]
+				motor_plate_milling [WORK MILL NOTE("cannot do second set of slots\nuntil frame is welded")]
 					motor_plate_material -> motor_plate_milling
 				motor_plate [ITEM]
 					motor_plate_milling -> motor_plate
@@ -146,8 +193,8 @@ DIGRAPH(chassis)
 			motor_main [ITEM]
 				motor_main_assembly -> motor_main
 		ENDSUB
-		motor [ITEM]
-			motor_main -> motor // TODO
+		motor [ITEM NOTE("todo")]
+			motor_main -> motor
 	ENDSUB
 	SUBGRAPH(whasm)
 		SUBGRAPH(whasm_main)
@@ -194,7 +241,7 @@ DIGRAPH(chassis)
 					whasm_customscrews_base -> whasm_customscrews_cutting
 				whasm_customscrews_grinding [WORK MISC]
 					whasm_customscrews_cutting -> whasm_customscrews_grinding
-				whasm_customscrews_testing [WORK ASSEMBLY]
+				whasm_customscrews_testing [WORK ASSEMBLY NOTE("test each with a nut")]
 					whasm_customscrews_grinding -> whasm_customscrews_testing
 				whasm_customscrews [ITEM]
 					whasm_customscrews_testing -> whasm_customscrews
@@ -210,7 +257,7 @@ DIGRAPH(chassis)
 				whasm_bolt_base -> whasm_bolt_cutting
 			whasm_bolt_grinding [WORK MISC]
 				whasm_bolt_cutting -> whasm_bolt_grinding
-			whasm_bolt_notching [WORK V_BANDSAW]
+			whasm_bolt_notching [WORK V_BANDSAW NOTE("Mr. Williams did this")]
 				whasm_bolt_cutting -> whasm_bolt_notching
 			whasm_bolt [ITEM]
 				{whasm_bolt_grinding, whasm_bolt_notching} -> whasm_bolt
@@ -221,7 +268,7 @@ DIGRAPH(chassis)
 				whasm_inspacer_material -> whasm_inspacer_cutting
 			whasm_inspacer_cleanup [WORK MISC]
 				whasm_inspacer_cutting -> whasm_inspacer_cleanup
-			whasm_inspacer_trimming [WORK LATHE]
+			whasm_inspacer_trimming [WORK LATHE NOTE("trim all to same length")]
 				whasm_inspacer_cleanup -> whasm_inspacer_trimming
 			whasm_inspacer [ITEM]
 				whasm_inspacer_trimming -> whasm_inspacer
@@ -232,7 +279,7 @@ DIGRAPH(chassis)
 				whasm_outspacer_material -> whasm_outspacer_cutting
 			whasm_outspacer_cleanup [WORK MISC]
 				whasm_outspacer_cutting -> whasm_outspacer_cleanup
-			whasm_outspacer_trimming [WORK LATHE]
+			whasm_outspacer_trimming [WORK LATHE NOTE("trim specific to each wheel")]
 				whasm_outspacer_cleanup -> whasm_outspacer_trimming
 				// frame -> whasm_outspacer_trimming [INDIRECT]
 			whasm_outspacer [ITEM]

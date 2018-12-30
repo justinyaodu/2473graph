@@ -19,6 +19,7 @@
 #define DRILL_PRESS color=green
 #define LATHE color=cyan
 #define TAP color=blue
+#define RIVET MISC
 #define ELECTRICAL color=magenta4
 #define MISC color=magenta
 #define ASSEMBLY color=gray
@@ -27,14 +28,18 @@
 #define INDIRECT constraint=false style=dashed
 
 // completion attributes
-#define PROGRESS(N) progress=N
+// #define PROGRESS(N) progress=N
+#define PROGRESS(N) fillcolor="gray;"+#N+":white"
 #define COMPLETE fillcolor=gray
+
+// add notes
+#define NOTE(N) label="\N\n("+N+")"
 
 // URL formatting
 #define URL(U) URL=U fontcolor=blue
 
 // graph macros
-#define DIGRAPH(NAME) digraph NAME { graph [layout=dot rankdir=TB] \
+#define DIGRAPH(NAME) digraph NAME { graph [layout=dot rankdir=TB forcelabels=true] \
 node [style=filled fillcolor=white fontcolor=black penwidth=3] \
 SUBGRAPH(status_key) \
 	unstarted [WORK V_BANDSAW] \
