@@ -1,0 +1,186 @@
+# 1 "tensioner.gc"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 31 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 32 "<command-line>" 2
+# 1 "tensioner.gc"
+# 1 "graph.gh" 1
+
+##efine GRAPH_GH
+# 2 "tensioner.gc" 2
+
+digraph tens { graph [layout=dot rankdir=TB forcelabels=true] node [style=filled fillcolor=white fontcolor=black penwidth=3] subgraph cluster_status_key { graph [style=dotted label=status_key ] unstarted [shape=box color=red] in_progress [shape=box color=red fillcolor="gray;"+"0.5"+":white"] unstarted -> in_progress complete [shape=box color=red fillcolor=gray] in_progress -> complete } subgraph cluster_color_key { graph [style=dotted label=color_key ] edge [style=invis] item [shape=oval] hacksaw [shape=box color=brown] item -> hacksaw vertical_bandsaw [shape=box color=red] hacksaw -> vertical_bandsaw mill [shape=box color=orange] vertical_bandsaw -> mill marking [shape=box color=yellow] mill -> marking hand_drill [shape=box color=darkgreen] marking -> hand_drill drill_press [shape=box color=green] hand_drill -> drill_press lathe [shape=box color=cyan] drill_press -> lathe tapping [shape=box color=blue] lathe -> tapping miscellaneous [shape=box color=magenta] tapping -> miscellaneous electrical [shape=box color=magenta4] miscellaneous -> electrical assembly [shape=box color=dimgray] electrical -> assembly }
+
+ subgraph cluster_tens_base { graph [style=dotted label=tens_base URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.bz11i8nqvo4u" fontcolor=cyan]
+
+  tens_materials [shape=oval]
+
+ }
+
+ subgraph cluster_tens_outerchannel { graph [style=dotted label=tens_outerchannel URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.wv4qalablcmo" fontcolor=cyan]
+
+  tens_outerchannel_material [shape=oval]
+   tens_materials -> tens_outerchannel_material
+
+  tens_outerchannel_cutting [shape=box color=red]
+   tens_outerchannel_material -> tens_outerchannel_cutting
+
+  tens_outerchannel_screwhole_marking [shape=box color=yellow]
+   tens_outerchannel_cutting -> tens_outerchannel_screwhole_marking
+
+  tens_outerchannel_screwhole_drilling [shape=box color=green]
+   tens_outerchannel_screwhole_marking -> tens_outerchannel_screwhole_drilling
+
+  tens_outerchannel [shape=oval]
+   tens_outerchannel_screwhole_drilling -> tens_outerchannel
+
+ }
+
+ subgraph cluster_tens_boltblock { graph [style=dotted label=tens_boltblock URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.odymg55qybni" fontcolor=cyan]
+
+  subgraph cluster_tens_boltblock_base { graph [style=dotted label=tens_boltblock_base ]
+
+   tens_boltblock_material [shape=oval]
+    tens_materials -> tens_boltblock_material
+
+   tens_boltblock_cutting [shape=box color=red]
+    tens_boltblock_material -> tens_boltblock_cutting
+
+  }
+
+  subgraph cluster_tens_boltblock_bolthole { graph [style=dotted label=tens_boltblock_bolthole URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.qsemmeqf6eoo" fontcolor=cyan]
+
+   tens_boltblock_bolthole_marking [shape=box color=yellow]
+    tens_boltblock_cutting -> tens_boltblock_bolthole_marking
+
+   tens_boltblock_bolthole_drilling [shape=box color=green]
+    tens_boltblock_bolthole_marking -> tens_boltblock_bolthole_drilling
+
+   tens_boltblock_bolthole_tapping [shape=box color=blue]
+    tens_boltblock_bolthole_drilling -> tens_boltblock_bolthole_tapping
+
+  }
+
+  subgraph cluster_tens_boltblock_screwholes { graph [style=dotted label=tens_boltblock_screwholes URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.qjlb1oos8fgy" fontcolor=cyan]
+
+   tens_boltblock_screwholes_marking [shape=box color=yellow]
+    tens_boltblock_cutting -> tens_boltblock_screwholes_marking
+
+   tens_boltblock_screwholes_drilling [shape=box color=green]
+    tens_boltblock_screwholes_marking -> tens_boltblock_screwholes_drilling
+
+  }
+
+  tens_boltblock_millingrecess [shape=box color=orange URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.2kw8bn8i0mgb" fontcolor=cyan]
+   tens_boltblock_cutting -> tens_boltblock_millingrecess
+
+  tens_boltblock_millingends [shape=box color=orange URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.kh392kmlf46h" fontcolor=cyan]
+   tens_boltblock_cutting -> tens_boltblock_millingends
+
+  tens_boltblock [shape=oval]
+   {tens_boltblock_bolthole_tapping, tens_boltblock_screwholes_drilling,
+     tens_boltblock_millingrecess, tens_boltblock_millingends} -> tens_boltblock
+
+ }
+
+ subgraph cluster_tens_bottomblock { graph [style=dotted label=tens_bottomblock URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.36bie55jnofm" fontcolor=cyan]
+
+  subgraph cluster_tens_bottomblock_base { graph [style=dotted label=tens_bottomblock_base ]
+
+   tens_bottomblock_material [shape=oval]
+    tens_materials -> tens_bottomblock_material
+
+   tens_bottomblock_cutting [shape=box color=red]
+    tens_bottomblock_material -> tens_bottomblock_cutting
+
+   tens_bottomblock_marking [shape=box color=yellow]
+    tens_bottomblock_cutting -> tens_bottomblock_marking
+
+  }
+
+  subgraph cluster_tens_bottomblock_mountholes { graph [style=dotted label=tens_bottomblock_mountholes URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.e3m6qungdv" fontcolor=cyan]
+
+   tens_bottomblock_mountholes_drilling [shape=box color=green]
+    tens_bottomblock_marking -> tens_bottomblock_mountholes_drilling
+
+   tens_bottomblock_mountholes_tapping [shape=box color=blue]
+    tens_bottomblock_mountholes_drilling -> tens_bottomblock_mountholes_tapping
+
+  }
+
+  subgraph cluster_tens_bottomblock_endholes { graph [style=dotted label=tens_bottomblock_endholes URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.l7gk8rdkorly" fontcolor=cyan]
+
+   tens_bottomblock_endholes_drilling [shape=box color=green]
+    tens_bottomblock_marking -> tens_bottomblock_endholes_drilling
+
+   tens_bottomblock_endholes_tapping [shape=box color=blue]
+    tens_bottomblock_endholes_drilling -> tens_bottomblock_endholes_tapping
+
+  }
+
+  tens_bottomblock_milling [shape=box color=orange, URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.95zv67v72i56" fontcolor=cyan]
+   tens_bottomblock_cutting -> tens_bottomblock_milling
+
+  tens_bottomblock [shape=oval]
+   {tens_bottomblock_mountholes_tapping, tens_bottomblock_endholes_tapping,
+     tens_bottomblock_milling} -> tens_bottomblock
+
+ }
+
+ subgraph cluster_tens_spacer { graph [style=dotted label=tens_spacer URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.bh06dun9j2l6" fontcolor=cyan]
+
+  tens_spacer_material [shape=oval]
+   tens_materials -> tens_spacer_material
+
+  tens_spacer_cutting [shape=box color=cyan]
+   tens_spacer_material -> tens_spacer_cutting
+
+  tens_spacer [shape=oval]
+   tens_spacer_cutting -> tens_spacer
+
+ }
+
+ subgraph cluster_tens_sprocket { graph [style=dotted label=tens_sprocket URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.x49jbaidbar" fontcolor=cyan]
+
+  tens_sprocket_base [shape=oval]
+   tens_materials -> tens_sprocket_base
+
+  tens_sprocket_borewidening [shape=box color=cyan]
+   tens_sprocket_base -> tens_sprocket_borewidening
+
+  tens_sprocket [shape=oval]
+   tens_sprocket_borewidening -> tens_sprocket
+
+ }
+
+ subgraph cluster_tens_support { graph [style=dotted label=tens_support URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.p5ghf2rcfxw" fontcolor=cyan]
+
+  tens_support_assembly [shape=box color=dimgray]
+   {tens_outerchannel, tens_bottomblock, tens_materials} -> tens_support_assembly
+
+  tens_support [shape=oval]
+   tens_support_assembly -> tens_support
+
+ }
+
+ subgraph cluster_tens_shaft { graph [style=dotted label=tens_shaft URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.aluukuv724uu" fontcolor=cyan]
+
+  tens_shaft_testing [shape=box color=magenta]
+   {tens_materials, tens_sprocket, tens_spacer} -> tens_shaft_testing
+
+  tens_shaft_assembly [shape=box color=dimgray]
+   {tens_shaft_testing, tens_boltblock} -> tens_shaft_assembly
+
+  tens_shaft [shape=oval]
+   tens_shaft_assembly -> tens_shaft
+
+ }
+
+ tens_mounting [shape=box color=dimgray, URL="https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.oohd6446uct6" fontcolor=cyan]
+  {tens_materials, tens_support, tens_shaft} -> tens_mounting
+
+ tens [shape=oval]
+  tens_mounting -> tens
+
+}

@@ -1,0 +1,176 @@
+#include "graph.gh"
+
+DIGRAPH(tens)
+
+	SUBGRAPH(tens_base, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.bz11i8nqvo4u"))
+		
+		tens_materials [ITEM]
+
+	ENDSUB
+	
+	SUBGRAPH(tens_outerchannel, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.wv4qalablcmo"))
+
+		tens_outerchannel_material [ITEM]
+			tens_materials -> tens_outerchannel_material
+		
+		tens_outerchannel_cutting [WORK V_BANDSAW]
+			tens_outerchannel_material -> tens_outerchannel_cutting
+
+		tens_outerchannel_screwhole_marking [WORK MARK]
+			tens_outerchannel_cutting -> tens_outerchannel_screwhole_marking
+
+		tens_outerchannel_screwhole_drilling [WORK DRILL_PRESS]
+			tens_outerchannel_screwhole_marking -> tens_outerchannel_screwhole_drilling
+
+		tens_outerchannel [ITEM]
+			tens_outerchannel_screwhole_drilling -> tens_outerchannel
+
+	ENDSUB
+
+	SUBGRAPH(tens_boltblock, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.odymg55qybni"))
+
+		SUBGRAPH(tens_boltblock_base)
+
+			tens_boltblock_material [ITEM]
+				tens_materials -> tens_boltblock_material
+
+			tens_boltblock_cutting [WORK V_BANDSAW]
+				tens_boltblock_material -> tens_boltblock_cutting
+
+		ENDSUB
+
+		SUBGRAPH(tens_boltblock_bolthole, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.qsemmeqf6eoo"))
+
+			tens_boltblock_bolthole_marking [WORK MARK]
+				tens_boltblock_cutting -> tens_boltblock_bolthole_marking
+
+			tens_boltblock_bolthole_drilling [WORK DRILL_PRESS]
+				tens_boltblock_bolthole_marking -> tens_boltblock_bolthole_drilling
+
+			tens_boltblock_bolthole_tapping [WORK TAPPING_STAND]
+				tens_boltblock_bolthole_drilling -> tens_boltblock_bolthole_tapping
+
+		ENDSUB
+			
+		SUBGRAPH(tens_boltblock_screwholes, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.qjlb1oos8fgy"))
+
+			tens_boltblock_screwholes_marking [WORK MARK]
+				tens_boltblock_cutting -> tens_boltblock_screwholes_marking
+
+			tens_boltblock_screwholes_drilling [WORK DRILL_PRESS]
+				tens_boltblock_screwholes_marking -> tens_boltblock_screwholes_drilling
+
+		ENDSUB
+
+		tens_boltblock_millingrecess [WORK MILL URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.2kw8bn8i0mgb")]
+			tens_boltblock_cutting -> tens_boltblock_millingrecess
+
+		tens_boltblock_millingends [WORK MILL URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.kh392kmlf46h")]
+			tens_boltblock_cutting -> tens_boltblock_millingends
+			
+		tens_boltblock [ITEM]
+			{tens_boltblock_bolthole_tapping, tens_boltblock_screwholes_drilling,
+					tens_boltblock_millingrecess, tens_boltblock_millingends} -> tens_boltblock
+
+	ENDSUB
+
+	SUBGRAPH(tens_bottomblock, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.36bie55jnofm"))
+		
+		SUBGRAPH(tens_bottomblock_base)
+
+			tens_bottomblock_material [ITEM]
+				tens_materials -> tens_bottomblock_material
+
+			tens_bottomblock_cutting [WORK V_BANDSAW]
+				tens_bottomblock_material -> tens_bottomblock_cutting
+
+			tens_bottomblock_marking [WORK MARK]
+				tens_bottomblock_cutting -> tens_bottomblock_marking
+
+		ENDSUB
+
+		SUBGRAPH(tens_bottomblock_mountholes, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.e3m6qungdv"))
+
+			tens_bottomblock_mountholes_drilling [WORK DRILL_PRESS]
+				tens_bottomblock_marking -> tens_bottomblock_mountholes_drilling
+
+			tens_bottomblock_mountholes_tapping [WORK TAPPING_STAND]
+				tens_bottomblock_mountholes_drilling -> tens_bottomblock_mountholes_tapping
+
+		ENDSUB
+
+		SUBGRAPH(tens_bottomblock_endholes, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.l7gk8rdkorly"))
+
+			tens_bottomblock_endholes_drilling [WORK DRILL_PRESS]
+				tens_bottomblock_marking -> tens_bottomblock_endholes_drilling
+
+			tens_bottomblock_endholes_tapping [WORK TAPPING_STAND]
+				tens_bottomblock_endholes_drilling -> tens_bottomblock_endholes_tapping
+
+		ENDSUB
+
+		tens_bottomblock_milling [WORK MILL, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.95zv67v72i56")]
+			tens_bottomblock_cutting -> tens_bottomblock_milling
+
+		tens_bottomblock [ITEM]
+			{tens_bottomblock_mountholes_tapping, tens_bottomblock_endholes_tapping,
+					tens_bottomblock_milling} -> tens_bottomblock
+
+	ENDSUB
+
+	SUBGRAPH(tens_spacer, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.bh06dun9j2l6"))
+
+		tens_spacer_material [ITEM]
+			tens_materials -> tens_spacer_material
+
+		tens_spacer_cutting [WORK LATHE_CUTTING]
+			tens_spacer_material -> tens_spacer_cutting
+
+		tens_spacer [ITEM]
+			tens_spacer_cutting -> tens_spacer
+
+	ENDSUB
+
+	SUBGRAPH(tens_sprocket, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.x49jbaidbar"))
+
+		tens_sprocket_base [ITEM]
+			tens_materials -> tens_sprocket_base
+
+		tens_sprocket_borewidening [WORK LATHE_DRILLING]
+			tens_sprocket_base -> tens_sprocket_borewidening
+
+		tens_sprocket [ITEM]
+			tens_sprocket_borewidening -> tens_sprocket
+
+	ENDSUB
+
+	SUBGRAPH(tens_support, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.p5ghf2rcfxw"))
+
+		tens_support_assembly [WORK ASSEMBLY]
+			{tens_outerchannel, tens_bottomblock, tens_materials} -> tens_support_assembly
+
+		tens_support [ITEM]
+			tens_support_assembly -> tens_support
+
+	ENDSUB
+
+	SUBGRAPH(tens_shaft, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.aluukuv724uu"))
+		
+		tens_shaft_testing [WORK MISC]
+			{tens_materials, tens_sprocket, tens_spacer} -> tens_shaft_testing
+
+		tens_shaft_assembly [WORK ASSEMBLY]
+			{tens_shaft_testing, tens_boltblock} -> tens_shaft_assembly
+
+		tens_shaft [ITEM]
+			tens_shaft_assembly -> tens_shaft
+
+	ENDSUB
+
+	tens_mounting [WORK ASSEMBLY, URL("https://docs.google.com/document/d/1qYkBiUN_XgFudSghjHKeIuyT0OMZuRz7uI5yUJP2KwM/edit#bookmark=id.oohd6446uct6")]
+		{tens_materials, tens_support, tens_shaft} -> tens_mounting
+
+	tens [ITEM]
+		tens_mounting -> tens
+
+END

@@ -18,11 +18,16 @@
 #define HAND_DRILL color=darkgreen
 #define DRILL_PRESS color=green
 #define LATHE color=cyan
+#define LATHE_CUTTING LATHE
+#define LATHE_DRILLING LATHE
+#define LATHE_TRIMMING LATHE
 #define TAP color=blue
+#define HAND_TAP TAP
+#define TAPPING_STAND TAP
 #define RIVET MISC
 #define ELECTRICAL color=magenta4
 #define MISC color=magenta
-#define ASSEMBLY color=gray
+#define ASSEMBLY color=dimgray
 
 // indirect dependency
 #define INDIRECT constraint=false style=dashed
@@ -36,7 +41,7 @@
 #define NOTE(N) label="\N\n("+N+")"
 
 // URL formatting
-#define URL(U) URL=U fontcolor=blue
+#define URL(U) URL=U fontcolor=cyan
 
 // graph macros
 #define DIGRAPH(NAME) digraph NAME { graph [layout=dot rankdir=TB forcelabels=true] \
